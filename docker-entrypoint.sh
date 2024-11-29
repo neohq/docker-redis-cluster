@@ -1,6 +1,14 @@
 #!/bin/sh
 
 if [ "$1" = 'redis-cluster' ]; then
+    # Ensure UTF-8 lang and locale
+    echo "Configuring locale..."
+    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+    echo "LANG=en_US.UTF-8" > /etc/locale.conf
+    locale-gen en_US.UTF-8
+    export LANG=en_US.UTF-8
+    export LC_ALL=en_US.UTF-8    
+
     # Allow passing in cluster IP by argument or environmental variable
     IP="${2:-$IP}"
 
