@@ -13,10 +13,14 @@ RUN apt-get update -qq && \
       net-tools supervisor ruby rubygems locales gettext-base wget gcc make g++ build-essential libc6-dev tcl && \
     apt-get clean -yqq
 
-# # Ensure UTF-8 lang and locale
-RUN locale-gen en_US.UTF-8
-ENV LANG       en_US.UTF-8
-ENV LC_ALL     en_US.UTF-8
+# Ensure UTF-8 lang and locale
+RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
+    echo "LANG=en_US.UTF-8" > /etc/locale.conf && \
+    locale-gen en_US.UTF-8 && \
+    dpkg-reconfigure -f noninteractive locales
+
+ENV LANG en_US.UTF-8
+ENV LC_ALL en_US.UTF-8
 
 # Necessary for gem installs due to SHA1 being weak and old cert being revoked
 ENV SSL_CERT_FILE=/usr/local/etc/openssl/cert.pem
